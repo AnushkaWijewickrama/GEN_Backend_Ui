@@ -1,0 +1,36 @@
+<mat-toolbar class="mat-elevation-z8">
+  <button mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
+    <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+    <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+  </button>
+  <h6>GEN</h6>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+    <!-- <img class="avatar mat-elevation-z8" src="https://source.unsplash.com/c_GmwfHBDzk/200x200" /> -->
+
+    <h6 class="name">Welcome User</h6>
+    <button mat-button class="menu-button" routerLink="/banner">
+      <mat-icon>info</mat-icon>
+      <span>Banner</span>
+    </button>
+
+    <button mat-button class="menu-button" routerLink="/products">
+      <mat-icon>info</mat-icon>
+      <span>Products</span>
+    </button>
+    <mat-divider></mat-divider>
+
+    <button mat-button class="menu-button" (click)="setLogOut()">
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </button>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="content mat-elevation-z8">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<!-- <app-auth></app-auth> -->
