@@ -29,6 +29,14 @@
           </option>
         </select>
       </div>
+      <div class="col-lg-5 col-12">
+        <label>Product Details</label>
+        <select formControlName="productDetails" class="form-control">
+          <option *ngFor="let item of getProductsDetailsList" [value]="item._id">
+            {{ item.title }}
+          </option>
+        </select>
+      </div>
       <div class="mt-4">
         <button mat-raised-button color="primary" [disabled]="!form.valid" type="submit">
           Create Product

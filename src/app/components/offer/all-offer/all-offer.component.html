@@ -1,0 +1,22 @@
+<button *ngIf="offer.length<3" mat-raised-button color="primary" routerLink="/addoffer">Add</button>
+<button *ngIf="offer.length==3" mat-raised-button color="primary" disabled>Add</button>
+<h1>Offer</h1>
+<label> Enter Only Three Items</label>
+<p-table [value]="offer" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Title</th>
+            <th>Discount</th>
+            <th>Image</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-offer>
+        <tr>
+            <td>{{ offer.title }}</td>
+            <td>{{ offer.discount }}</td>
+            <td><img src="{{ offer.imagePath }}" width="100" height="100" alt="" srcset=""></td>
+            <td><button mat-raised-button color="warn" (click)="deleteData(offer._id)">Delete</button></td>
+
+        </tr>
+    </ng-template>
+</p-table>

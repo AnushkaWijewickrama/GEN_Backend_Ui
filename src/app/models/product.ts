@@ -3,6 +3,5 @@ export interface Product {
   title: string;
   description: string;
   imagePath: string,
-  brand: any
-  model: any
+  productDetails: any
 }

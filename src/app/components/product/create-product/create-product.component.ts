@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Product } from "../../../models/product";
 import { ProductService } from "../../../services/product.service";
 import { subCategoty } from "../../../models/subCategoty";
+import { ProductSingleService } from "../../../services/productsingle.service";
 
 
 @Component({
@@ -24,8 +25,9 @@ export class CreateProductComponent implements OnInit {
   modelList: any = [];
   bannerSubscription: any;
   isedit: boolean = false;
+  getProductsDetailsList: any = []
 
-  constructor(private poductService: ProductService, private activatedRoute: ActivatedRoute) { }
+  constructor(private poductService: ProductService, private activatedRoute: ActivatedRoute, private productSingleService: ProductSingleService) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -34,9 +36,10 @@ export class CreateProductComponent implements OnInit {
       image: new FormControl(null, Validators.required),
       latest: new FormControl(null, Validators.required),
       price: new FormControl(null, Validators.required),
-      id: new FormControl(null)
+      id: new FormControl(null),
+      productDetails: new FormControl(null)
     });
-    // this.getModelList();
+    this.getProductsSingle();
     this.activatedRoute.params.subscribe(data => {
       this.isedit = data['id'] ? true : false
       if (this.isedit) {
@@ -48,6 +51,7 @@ export class CreateProductComponent implements OnInit {
           this.form.get('id')?.patchValue(x._id)
           this.form.get('price')?.patchValue(x.price)
           this.form.get('latest')?.patchValue(x.latest)
+          this.form.get('productDetails')?.patchValue(x.productDetails)
         });
 
       }
@@ -69,16 +73,23 @@ export class CreateProductComponent implements OnInit {
   }
   onSubmit() {
     if (!this.isedit) {
-      this.poductService.addProduct(this.form.value.title, this.form.value.image, this.form.value.description, this.form.value.latest, this.form.value.price);
+      this.poductService.addProduct(this.form.value.title, this.form.value.image, this.form.value.description, this.form.value.latest, this.form.value.price, this.form.value.productDetails);
       this.form.reset();
       this.imageData = null;
     }
     else {
       console.log(this.form.value.model)
-      this.poductService.updateSingleData(this.form.value.title, this.form.value.image, this.form.value.description, this.form.value.id, this.form.value.latest, this.form.value.price);
+      this.poductService.updateSingleData(this.form.value.title, this.form.value.image, this.form.value.description, this.form.value.id, this.form.value.latest, this.form.value.price, this.form.value.productDetails);
       this.form.reset();
       this.imageData = null;
     }
 
+  }
+
+  getProductsSingle(): void {
+    this.productSingleService.query().subscribe(((res: HttpResponse<any>) => {
+      this.getProductsDetailsList = res.body
+      console.log(res.body)
+    }))
   }
 }

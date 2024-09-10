@@ -14,7 +14,6 @@ export class ProductService {
   private products: any = [];
   private product$ = new Subject<Product[]>();
   readonly url = SERVER_API_URL + "/api/products";
-  readonly bannerUrl = SERVER_API_URL + "/api/banner";
 
   constructor(private http: HttpClient, private route: Router) { }
 
@@ -36,13 +35,14 @@ export class ProductService {
     return this.product$.asObservable();
   }
 
-  addProduct(title: string, image: File, description: string, latest: any, price: string): void {
+  addProduct(title: string, image: File, description: string, latest: any, price: string, productDetails: any): void {
     const productData = new FormData();
     productData.append("title", title);
     productData.append("image", image);
     productData.append("description", description);
     productData.append("latest", latest);
     productData.append("price", price);
+    productData.append("productDetails", productDetails);
     this.http
       .post<Product>(this.url, productData)
       .subscribe((productData: any) => {
@@ -51,8 +51,7 @@ export class ProductService {
           title: productData?.title,
           description: productData?.description,
           imagePath: productData?.imagePath,
-          brand: productData?.brand,
-          model: productData?.model,
+          productDetails: productData?.productDetails
         };
         this.route.navigate(['/products'])
         this.products.push(product);
@@ -74,7 +73,7 @@ export class ProductService {
   getSingleData(id: string): Observable<HttpResponse<{}>> {
     return this.http.get(`${this.url}/singledata/${id}`, { observe: 'response' });
   }
-  updateSingleData(title: string, image: File, description: string, id: string, latest: string, price: string): void {
+  updateSingleData(title: string, image: File, description: string, id: string, latest: string, price: string, productDetails: any): void {
     const productData = new FormData();
     productData.append("title", title);
     if (image) {
@@ -84,6 +83,7 @@ export class ProductService {
     productData.append("description", description);
     productData.append("latest", latest);
     productData.append("price", price);
+    productData.append("productDetails", productDetails);
 
     this.http
       .put<{ product: Product }>(`${this.url}/update/${id}`, productData)
@@ -93,8 +93,7 @@ export class ProductService {
           title: product?.title,
           description: product?.description,
           imagePath: product?.imagePath,
-          brand: product?.brand,
-          model: product?.model
+          productDetails: product?.productDetails
         };
         this.products.push(model);
 
