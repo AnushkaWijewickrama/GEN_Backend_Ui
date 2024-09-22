@@ -3,10 +3,9 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule } 
 import { CommonModule, NgFor, NgIf } from "@angular/common";
 import { HttpClientModule, HttpResponse } from "@angular/common/http";
 import { MatButtonModule } from "@angular/material/button";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { Product } from "../../../models/product";
 import { ProductService } from "../../../services/product.service";
-import { subCategoty } from "../../../models/subCategoty";
 import { ProductSingleService } from "../../../services/productsingle.service";
 
 
@@ -35,9 +34,10 @@ export class CreateProductComponent implements OnInit {
       description: new FormControl(null, Validators.required),
       image: new FormControl(null, Validators.required),
       latest: new FormControl(null, Validators.required),
-      price: new FormControl(null, Validators.required),
+      price: new FormControl('unavailable'),
       id: new FormControl(null),
-      productDetails: new FormControl(null)
+      productDetails: new FormControl(null),
+      priceActive: new FormControl()
     });
     this.getProductsSingle();
     this.activatedRoute.params.subscribe(data => {
@@ -51,6 +51,7 @@ export class CreateProductComponent implements OnInit {
           this.form.get('id')?.patchValue(x._id)
           this.form.get('price')?.patchValue(x.price)
           this.form.get('latest')?.patchValue(x.latest)
+          this.form.get('priceActive')?.patchValue(x.priceActive)
           this.form.get('productDetails')?.patchValue(x.productDetails)
         });
 
@@ -73,13 +74,20 @@ export class CreateProductComponent implements OnInit {
   }
   onSubmit() {
     if (!this.isedit) {
-      this.poductService.addProduct(this.form.value.title, this.form.value.image, this.form.value.description, this.form.value.latest, this.form.value.price, this.form.value.productDetails);
+      if (this.form.get('priceActive')?.value) {
+        if (!this.form.get('priceActive')?.value) {
+          this.form.get('price')?.patchValue('unavailable')
+        }
+      }
+      this.poductService.addProduct(this.form.value.title, this.form.value.image, this.form.value.description, this.form.value.latest, this.form.value.price, this.form.value.productDetails, this.form.value.priceActive);
       this.form.reset();
       this.imageData = null;
     }
     else {
-      console.log(this.form.value.model)
-      this.poductService.updateSingleData(this.form.value.title, this.form.value.image, this.form.value.description, this.form.value.id, this.form.value.latest, this.form.value.price, this.form.value.productDetails);
+      if (!this.form.get('priceActive')?.value) {
+        this.form.get('price')?.patchValue('unavailable')
+      }
+      this.poductService.updateSingleData(this.form.value.title, this.form.value.image, this.form.value.description, this.form.value.id, this.form.value.latest, this.form.value.price, this.form.value.productDetails, this.form.value.priceActive);
       this.form.reset();
       this.imageData = null;
     }
@@ -89,7 +97,6 @@ export class CreateProductComponent implements OnInit {
   getProductsSingle(): void {
     this.productSingleService.query().subscribe(((res: HttpResponse<any>) => {
       this.getProductsDetailsList = res.body
-      console.log(res.body)
     }))
   }
 }

@@ -6,8 +6,8 @@ import { MatButtonModule } from "@angular/material/button";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Product } from "../../../models/product";
 import { ProductSingleService } from "../../../services/productsingle.service";
-import { QuillModule } from "ngx-quill";
 import { AngularEditorModule } from "@kolkov/angular-editor";
+import { ProductService } from "../../../services/product.service";
 
 
 @Component({
@@ -25,31 +25,45 @@ export class CreateProductSingleComponent implements OnInit {
   bannerSubscription: any;
   isedit: boolean = false;
 
-  constructor(private poductService: ProductSingleService, private router: Router, private fb: FormBuilder, private activatedRoute: ActivatedRoute) { }
+  constructor(private productSingleService: ProductSingleService, private productService: ProductService, private fb: FormBuilder, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
       title: new FormControl(null, Validators.required),
       description: new FormControl(null, Validators.required),
       longDescription: new FormControl(null),
-      pdf: new FormControl(),
       image: this.fb.array([]),
       id: new FormControl(null),
+      carat: new FormControl(null),
+      clarity: new FormControl(null),
+      cut: new FormControl(null),
+      price: new FormControl('unavailable')
     });
     this.activatedRoute.params.subscribe(data => {
       this.isedit = data['id'] ? true : false
       if (this.isedit) {
-        this.poductService.getSingleData(data['id']).subscribe((res: HttpResponse<any>) => {
-          let x = res.body
-          this.form.get('title')?.patchValue(x.title)
-          this.form.get('description')?.patchValue(x.description)
-          this.form.get('longDescription')?.patchValue(x.longDescription)
-          this.form.get('model')?.patchValue(x.model)
-          this.form.get('id')?.patchValue(x._id)
-          this.form.get('pdf')?.patchValue(x.pdf)
-          x?.imagePath?.forEach((image: string) => {
-            this.image.push(this.newImage(image));
-          });
+        this.productSingleService.getSingleData(data['id']).subscribe((productSingleRes: HttpResponse<any>) => {
+          this.productService.query().subscribe((res: any) => {
+            let x = productSingleRes.body
+            let y = res.body
+            this.form.get('title')?.patchValue(x.title)
+            this.form.get('description')?.patchValue(x.description)
+            this.form.get('longDescription')?.patchValue(x.longDescription)
+            this.form.get('model')?.patchValue(x.model)
+            this.form.get('id')?.patchValue(x._id)
+            this.form.get('carat')?.patchValue(x.carat)
+            this.form.get('clarity')?.patchValue(x.clarity)
+            this.form.get('cut')?.patchValue(x.cut)
+            x?.imagePath?.forEach((image: string) => {
+              this.image.push(this.newImage(image));
+            });
+            y.forEach((element: any) => {
+              if (element.productDetails == x._id) {
+                this.form.get('price')?.patchValue(element?.price)
+              }
+            });
+          })
+
         })
 
 
@@ -95,13 +109,13 @@ export class CreateProductSingleComponent implements OnInit {
 
   onSubmit() {
     if (!this.isedit) {
-      this.poductService.addProduct(this.form.value.title, this.image.value, this.form.value.description, this.form.value.longDescription, this.form.value.pdf);
+      this.productSingleService.addProduct(this.form.value.title, this.image.value, this.form.value.description, this.form.value.longDescription, this.form.value.carat, this.form.value.clarity, this.form.value.cut, this.form.value.price);
       this.form.reset()
       this.image.reset()
       this.imageData = null;
     }
     else {
-      this.poductService.updateSingleData(this.form.value.title, this.image.value, this.form.value.description, this.form.value.longDescription, this.form.value.pdf, this.form.value.id);
+      this.productSingleService.updateSingleData(this.form.value.title, this.image.value, this.form.value.description, this.form.value.longDescription, this.form.value.id, this.form.value.carat, this.form.value.clarity, this.form.value.cut, this.form.value.price);
       this.form.reset()
       this.image.reset()
       this.imageData = null;

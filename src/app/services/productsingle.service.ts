@@ -34,12 +34,14 @@ export class ProductSingleService {
   getProductStream() {
     return this.product$.asObservable();
   }
-
-  addProduct(title: string, image: any, description: string, longDescription: any, pdf: any): void {
+  addProduct(title: string, image: any, description: string, longDescription: any, carat: string, clarity: string, cut: string, price: string): void {
     const productData = new FormData();
     productData.append("title", title);
     productData.append("longDescription", longDescription);
-    productData.append("pdf", pdf);
+    productData.append("carat", carat);
+    productData.append("clarity", clarity);
+    productData.append("cut", cut);
+    productData.append("price", price);
     Object.keys(image).forEach(element => {
       productData.append("image", image[element].image);
     });
@@ -68,13 +70,14 @@ export class ProductSingleService {
     const options = createRequestOption(req);
     return this.http.get<any[]>(this.url, { params: options, observe: 'response' });
   }
-  // this.form.value.title, this.image.value, this.form.value.description, this.form.value.longDescription, this.form.value.pdf, this.form.value.id
-  updateSingleData(title: string, image: any, description: string, longDescription: any, pdf: any, id: string): void {
-    console.log(id)
+  updateSingleData(title: string, image: any, description: string, longDescription: any, id: string, carat: string, clarity: string, cut: string, price: string): void {
     const productData = new FormData();
     productData.append("title", title);
     productData.append("longDescription", longDescription);
-    productData.append("pdf", pdf);
+    productData.append("carat", carat);
+    productData.append("clarity", clarity);
+    productData.append("cut", cut);
+    productData.append("price", price);
     if (image) {
       Object.keys(image).forEach(element => {
         console.log(image[element].image)

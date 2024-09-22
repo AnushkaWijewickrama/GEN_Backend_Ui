@@ -4,14 +4,37 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-5 col-12">
-        <input class="form-control mb-4" formControlName="title" type="text" placeholder="Enter title..." />
+        <label for="">Title</label>
+        <input class="form-control mb-4" formControlName="title" type="text" placeholder="Enter Title..." />
       </div>
       <div class="col-lg-5 col-12">
+        <label for="">Description</label>
         <input class="form-control" formControlName="description" type="text" placeholder="Enter Description..." />
       </div>
-      <div class="col-lg-5 col-12">
+      <div class="col-lg-5 col-12 mb-4">
+        <label for="">Long Description</label>
         <angular-editor [placeholder]="'Long Description here...'" formControlName="longDescription"></angular-editor>
       </div>
+      <div class="col-lg-5 col-12">
+        <label for="">Clarity</label>
+
+        <input class="form-control" formControlName="clarity" type="text" placeholder="Enter Clarity..." />
+      </div>
+      <div class="col-lg-5 col-12">
+        <label for="">Carat</label>
+
+        <input class="form-control" formControlName="carat" type="text" placeholder="Enter Carat..." />
+      </div>
+      <div class="col-lg-5 col-12">
+        <label for="">Cut</label>
+
+        <input class="form-control" formControlName="cut" type="text" placeholder="Enter Cut..." />
+      </div>
+      <div class="col-lg-5 col-12" *ngIf="form.value.price == 'unavailable'?false:true">
+        <label for="">Price</label>
+        <input class="form-control" formControlName="price" type="text" readonly />
+      </div>
+
       <div formArrayName="image" class="mt-4 mb-4">
         <div *ngFor="let img of image.controls; let i = index">
           <div [formGroupName]="i">

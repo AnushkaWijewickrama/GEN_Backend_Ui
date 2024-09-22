@@ -4,4 +4,5 @@ export interface Product {
   description: string;
   imagePath: string,
   productDetails: any
+  priceActive: boolean
 }

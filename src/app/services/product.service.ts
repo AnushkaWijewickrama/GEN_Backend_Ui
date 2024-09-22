@@ -35,13 +35,14 @@ export class ProductService {
     return this.product$.asObservable();
   }
 
-  addProduct(title: string, image: File, description: string, latest: any, price: string, productDetails: any): void {
+  addProduct(title: string, image: File, description: string, latest: any, price: string, productDetails: any, priceActive: string): void {
     const productData = new FormData();
     productData.append("title", title);
     productData.append("image", image);
     productData.append("description", description);
     productData.append("latest", latest);
     productData.append("price", price);
+    productData.append("priceActive", priceActive);
     productData.append("productDetails", productDetails);
     this.http
       .post<Product>(this.url, productData)
@@ -51,6 +52,7 @@ export class ProductService {
           title: productData?.title,
           description: productData?.description,
           imagePath: productData?.imagePath,
+          priceActive: productData?.priceActive,
           productDetails: productData?.productDetails
         };
         this.route.navigate(['/products'])
@@ -73,7 +75,7 @@ export class ProductService {
   getSingleData(id: string): Observable<HttpResponse<{}>> {
     return this.http.get(`${this.url}/singledata/${id}`, { observe: 'response' });
   }
-  updateSingleData(title: string, image: File, description: string, id: string, latest: string, price: string, productDetails: any): void {
+  updateSingleData(title: string, image: File, description: string, id: string, latest: string, price: string, productDetails: any, priceActive: string): void {
     const productData = new FormData();
     productData.append("title", title);
     if (image) {
@@ -83,6 +85,7 @@ export class ProductService {
     productData.append("description", description);
     productData.append("latest", latest);
     productData.append("price", price);
+    productData.append("priceActive", priceActive);
     productData.append("productDetails", productDetails);
 
     this.http
@@ -93,6 +96,7 @@ export class ProductService {
           title: product?.title,
           description: product?.description,
           imagePath: product?.imagePath,
+          priceActive: product?.priceActive,
           productDetails: product?.productDetails
         };
         this.products.push(model);
