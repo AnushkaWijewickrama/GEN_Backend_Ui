@@ -21,7 +21,6 @@ export class ProductSingleService {
       .get<Product>(this.url)
       .pipe(
         map((productData) => {
-          console.log(productData)
           return productData;
         })
       )
@@ -80,7 +79,6 @@ export class ProductSingleService {
     productData.append("price", price);
     if (image) {
       Object.keys(image).forEach(element => {
-        console.log(image[element].image)
         productData.append("image", image[element].image);
       });
     }

@@ -23,7 +23,6 @@ export class BannerService {
       .get<{ profiles: any }>(this.url)
       .pipe(
         map((bannerData) => {
-          console.log(bannerData)
           return bannerData;
         })
       )

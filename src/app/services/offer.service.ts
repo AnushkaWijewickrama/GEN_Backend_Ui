@@ -23,7 +23,6 @@ export class OfferService {
       .get<{ profiles: any }>(this.url)
       .pipe(
         map((offerData) => {
-          console.log(offerData)
           return offerData;
         })
       )
