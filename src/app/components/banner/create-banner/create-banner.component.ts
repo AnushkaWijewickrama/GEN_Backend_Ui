@@ -18,7 +18,6 @@ export class CreateBannerComponent implements OnInit {
   form!: FormGroup;
   banner!: Banner;
   imageData!: any;
-  brandList: any = [];
 
   constructor(private profileService: BannerService) { }
 
@@ -31,7 +30,6 @@ export class CreateBannerComponent implements OnInit {
       isVideo: new FormControl(null),
       videoPath: new FormControl(null)
     });
-    this.getBrand();
   }
 
   onFileSelect(event: any) {
@@ -52,10 +50,5 @@ export class CreateBannerComponent implements OnInit {
     this.form.reset();
     this.imageData = null;
 
-  }
-  getBrand(): void {
-    this.profileService.query().subscribe(res => {
-      this.brandList = res.body.brand
-    })
   }
 }
