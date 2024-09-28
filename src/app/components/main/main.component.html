@@ -34,10 +34,15 @@
       <span>Register</span>
     </button>
     <mat-divider></mat-divider>
-    <button mat-button class="menu-button" (click)="setLogOut()">
-      <mat-icon>logout</mat-icon>
-      <span>Logout</span>
-    </button>
+    <ng-container *ngIf="isActiveUser">
+      <button mat-button class="menu-button" (click)="setLogOut()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+
+    </ng-container>
+
+
   </mat-sidenav>
   <mat-sidenav-content>
     <div class="content mat-elevation-z8">

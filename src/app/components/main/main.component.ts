@@ -71,6 +71,7 @@ export class MainComponent implements OnInit {
   }
   setLogOut() {
     localStorage.removeItem('authenticationToken')
+    this.isActiveUser = localStorage.getItem('authenticationToken') ? true : false
     this.router.navigate(['/'])
   }
 
