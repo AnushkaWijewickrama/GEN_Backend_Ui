@@ -11,9 +11,13 @@ import { SERVER_API_URL } from "../util/common-util";
 })
 export class AuthService {
   readonly resourceUrl = SERVER_API_URL + "/api/user/login";
+  readonly registerUrl = SERVER_API_URL + "/api/user/register";
 
   constructor(private http: HttpClient) { }
 
+  register(register: any): Observable<any> {
+    return this.http.post<any>(this.registerUrl, register, { observe: 'response' });
+  }
   create(login: any): Observable<any> {
     return this.http.post<any>(this.resourceUrl, login, { observe: 'response' });
   }

@@ -1,0 +1,26 @@
+<button mat-raised-button color="primary" type="submit" routerLink="/user" routerLinkActive="router-link-active">
+    All users
+</button>
+<div class="wrapper">
+    <div class="rec-prism">
+        <div class="face face-front">
+            <div class="content">
+                <h2>Register</h2>
+                <form [formGroup]="form">
+                    <div class="field-wrapper">
+                        <input type="text" name="username" formControlName="username" placeholder="username" form />
+                        <label>username</label>
+                    </div>
+                    <div class="field-wrapper">
+                        <input type="password" name="password" placeholder="password" autocomplete="new-password"
+                            formControlName="password" />
+                        <label>password</label>
+                    </div>
+                    <div class="field-wrapper">
+                        <input type="submit" [disabled]="!form.valid" (click)="onSubmit()" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

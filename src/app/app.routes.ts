@@ -9,6 +9,8 @@ import { AllOfferComponent } from './components/offer/all-offer/all-offer.compon
 import { CreateOfferComponent } from './components/offer/create-offer/create-offer.component';
 import { AllProductSingleComponent } from './components/product-single/all-product-single/all-product-single.component';
 import { CreateProductSingleComponent } from './components/product-single/create-product-single/create-product-single.component';
+import { RegisterComponent } from './components/register/register.component';
+import { UserComponent } from './components/user/user.component';
 
 
 export const routes: Routes = [
@@ -17,6 +19,16 @@ export const routes: Routes = [
         component: AuthComponent
 
 
+    },
+    {
+        path: 'register',
+        component: RegisterComponent,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'user',
+        component: UserComponent,
+        canActivate: [AuthGuardService]
     },
     {
         path: 'addBanner',
